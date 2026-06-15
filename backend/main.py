@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from youtube_transcript_api import YouTubeTranscriptApi
+from dotenv import load_dotenv
+import os
 from pydantic import BaseModel
 from typing import List
 import re
@@ -13,7 +15,17 @@ from rag.llm import (
     generate_answer,
     check_topic_relevance
 )
+from youtube_transcript_api.proxies import WebshareProxyConfig
 from yt_dlp import YoutubeDL
+
+load_dotenv()
+
+ytt_api = YouTubeTranscriptApi(
+    proxy_config=WebshareProxyConfig(
+        proxy_username=os.getenv("WEBSHARE_USERNAME"),
+        proxy_password=os.getenv("WEBSHARE_PASSWORD"),
+    )
+)
 
 def get_video_title(url):
 
@@ -162,9 +174,7 @@ def ask_question(data: QueryRequest):
         video_titles[video_id] = title
         print("TITLE FETCHED:", title)
         try:
-            transcript = YouTubeTranscriptApi().fetch(
-                video_id
-            )
+            transcript = ytt_api.fetch(video_id)
 
             for item in transcript:
 
