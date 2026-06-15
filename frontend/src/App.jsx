@@ -299,7 +299,7 @@ function App() {
       setResearchQuestions([]);
       setError("");
 
-      const response = await axios.post("http://127.0.0.1:8000/ask", {
+      const response = await axios.post("https://youtube-research-backend-hvt6.onrender.com/ask", {
         urls: validUrls,
         question: question,
       });
@@ -342,7 +342,7 @@ function App() {
       setChatAnswer("");
       setChatQuestion(q);
 
-      const response = await axios.post("http://127.0.0.1:8000/chat", {
+      const response = await axios.post("https://youtube-research-backend-hvt6.onrender.com/chat", {
         question: q,
       });
 
