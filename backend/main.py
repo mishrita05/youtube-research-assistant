@@ -29,9 +29,16 @@ ytt_api = YouTubeTranscriptApi(
 
 def get_video_title(url):
 
+    proxy_url = (
+        f"http://{os.getenv('WEBSHARE_USERNAME')}:"
+        f"{os.getenv('WEBSHARE_PASSWORD')}"
+        "@p.webshare.io:80/"
+    )
+
     try:
         ydl_opts = {
-            "quiet": True
+            "quiet": True,
+            "proxy": proxy_url
         }
 
         with YoutubeDL(ydl_opts) as ydl:
